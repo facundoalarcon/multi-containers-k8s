@@ -1,0 +1,17 @@
+# usa sudo
+sudo: required
+services:
+# usa docker
+  - docker
+before_install:
+  # sale de travis
+  - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
+  # las dos siguientes lineas son para google cloud sdk
+  # descarga el sdk de google cloud y lo instala localmente en la instancia de travis-ci
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  # se usa una config de path.bash.inc del directorio principal de google cloud que va a modifrcar algunas cosas en nuestro server asignado por travis-ci
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  # hace un update al kubectl por medio del cli de google
+  - gcloud components update kubectl
+  # usa las credenciales del json para autenticarse en la cuenta de google con un service account (tipo IAM user de aws)
+  - gcloud auth activate-service-account --key-file service-account.json
