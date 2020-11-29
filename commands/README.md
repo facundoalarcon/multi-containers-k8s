@@ -9,6 +9,6 @@ git push -u origin master
 ### change repo
 ```
 git remote -v
-git remote remove origin // fatal: no such remote: origin
+git remote remove origin
 git remote add origin <url>
 ```
