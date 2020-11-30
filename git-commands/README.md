@@ -26,3 +26,7 @@ git log
 ```
 git checkout <sha>
 ```
+### new branche
+```
+git checkout -b devel
+```
