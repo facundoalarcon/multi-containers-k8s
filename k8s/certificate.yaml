@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: etherhunters-com-tls
+spec:
+  secretName: etherhunters-com
+  issuerRef:
+    name: lestsencrypt-prod
+    kind: ClusterIssuer
+  commonName: etherhunters.com
+  dnsNames:
+    - etherhunters.com
+    - www.etherhunters.com
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - etherhunters.com
+          - www.etherhunters.com

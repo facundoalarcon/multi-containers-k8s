@@ -174,3 +174,8 @@ gcloud container clusters upgrade  multi-k8s --master --cluster-version latest
 [info](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster)
 [info](https://cloud.google.com/kubernetes-engine/versioning-and-upgrades#specifying_cluster_version)
 [avalable versions](https://cloud.google.com/kubernetes-engine/docs/release-notes)
+
+[Certificate](https://cert-manager.io/next-docs/tutorials/acme/dns-validation/)
+[Certificate](https://cert-manager.io/next-docs/tutorials/acme/http-validation/)
+
+[ClusterIssuer](https://cert-manager.io/docs/configuration/acme/)
