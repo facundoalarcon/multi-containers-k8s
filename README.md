@@ -10,7 +10,7 @@ https://github.com/settings/tokens
 ```
 gem install travis
 travis login --com --github-token <token>
-travis encrypt-file service-account.json -r facundoalarcon/multi-k8s --com
+travis encrypt-file service-account.json -r facundoalarcon/multi-containers-k8s --com
 ```
 ```
 script:
