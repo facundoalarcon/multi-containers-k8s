@@ -161,3 +161,16 @@ kubectl set image deployments/server-deployment server=facundoalarcon/multi-serv
 kubectl set image deployments/client-deployment client=facundoalarcon/multi-client:$SHA
 kubectl set image deployments/worker-deployment worker=facundoalarcon/multi-worker:$SHA
 ```
+## Update k8s
+> En mi caso minikube usa la version 1.19 pero todavia esto no esta disponible
+
+> es para usar la version de ingress-service.yaml que yo hab[ia creado]
+[versiones disponibles](https://cloud.google.com/kubernetes-engine/docs/release-notes)
+```
+gcloud container clusters upgrade  YOUR_CLUSTER_NAME --master --cluster-version K8S_VERSION
+gcloud container clusters upgrade  multi-k8s --master --cluster-version 1.9.7
+gcloud container clusters upgrade  multi-k8s --master --cluster-version latest
+```
+[info](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster)
+[info](https://cloud.google.com/kubernetes-engine/versioning-and-upgrades#specifying_cluster_version)
+[avalable versions](https://cloud.google.com/kubernetes-engine/docs/release-notes)
