@@ -1,54 +1,28 @@
-# usa sudo
 sudo: required
 services:
-# usa docker
   - docker
-# variables de entorno
 env:
   gobal:
-    # recupera el ultimo sha de git para usarlo luego en el script deploy.sh
     - SHA=$(git rev-parse HEAD)
-    # una variable que se usa en el sdk de google indicandole que no muestre ninguna advertencia cuando se ejecute el comando gcloud que pide algun yes/no, esto porque no tenemos la posibilidad de usarlo en un travis environment
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
-  # sale de travis
   - openssl aes-256-cbc -K $encrypted_9f3b5599b056_key -iv $encrypted_9f3b5599b056_iv -in service-account.json.enc -out service-account.json -d
-  # las dos siguientes lineas son para google cloud sdk
-  # descarga el sdk de google cloud y lo instala localmente en la instancia de travis-ci
   - curl https://sdk.cloud.google.com | bash > /dev/null;
-  # se usa una config de path.bash.inc del directorio principal de google cloud que va a modifrcar algunas cosas en nuestro server asignado por travis-ci
   - source $HOME/google-cloud-sdk/path.bash.inc
-  # hace un update al kubectl por medio del cli de google
   - gcloud components update kubectl
-  # usa las credenciales del json para autenticarse en la cuenta de google con un service account (tipo IAM user de aws)
-  # con el comando de abajo desencripta el json encriptado
   - gcloud auth activate-service-account --key-file service-account.json
-  # seleccionar el proyecto con el id del mismo
   - gcloud config set project multi-k8s-297120
-  # indicar la AZ
   - gcloud config set compute/zone us-central1-a
-  # indicar el nombre del cluster k8s
   - gcloud container clusters get-credentials multi-cluster
-  # autenticacion en Docker por medio del servio previamente indicado de docker
-  # recordar que esas son variables de entorno en travis
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  # test client, crea la imagen de test
   - docker build -t facundoalarcon/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  # run and test la imagen previamente creada, hace un test de cobertura con node (npm)
-  # (esto es para que travis ejecute las pruebas, en este caso realmente no estamos haciendo algun test profundo)
-  # esto deberia reemplazarse con los comandos que se requieran para hacer un test real
   - docker run -e CI=true facundoalarcon/react-test npm test
 
 deploy:
-  # no hay ningun script preestablecido como en el caso de beanstalk, en este caso vamos a crearlo de 0
-  # por tanto le decimos a travis que ejecute solo un script
   provider: script
-  # le decimos que vamos a armar un script llamado deploy
-  # esto va a estar en el root folder directory
   script: bash ./deploy.sh
-  # lo vamos a ejecutar en la rama master
   on:
     branch: master
   
