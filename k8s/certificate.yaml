@@ -5,7 +5,7 @@ metadata:
 spec:
   secretName: etherhunters-com
   issuerRef:
-    name: lestsencrypt-prod
+    name: letsencrypt-prod
     kind: ClusterIssuer
   commonName: etherhunters.com
   dnsNames:
