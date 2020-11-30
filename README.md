@@ -36,6 +36,7 @@ kubectl create secret generic pgpassword --from-literal PGPASSWORD=myPassword123
 
 ## Using Helm
 Helm v3. This is a major update, as it removes the use of Tiller
+in GCP use [FROM SCRIPT](https://helm.sh/docs/intro/install/)
 
 [repo](https://github.com/kubernetes/ingress-nginx)
 
@@ -44,8 +45,6 @@ Helm v3. This is a major update, as it removes the use of Tiller
 [Helm](https://kubernetes.github.io/ingress-nginx/deploy/#using-helm) es escencialmente un programa que nos permite administrar SW dentro de un cluster k8s [repo](https://github.com/helm/helm)
 
 [Quick start Guide](https://helm.sh/docs/intro/quickstart/)
-
-in GCP use [FROM SCRIPT](https://helm.sh/docs/intro/install/)
 
 ### Tiller
 Tiller viene junto con Helm, es un server que corre dentro de nuestro cluster k8s, sera el responsable de configurar algunas cosas en el cluster e instalar otras
