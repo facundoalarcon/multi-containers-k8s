@@ -71,14 +71,14 @@ A[Helm (Client)] --> B[Tiller (Server)]
 - limita quien puede acceder a el cluster k8s
 - Enabed on GCP by default
 
-*User accounts* *Services accounts* for authentication
+*User accounts* and *Services accounts* for authentication
 #### User accounts
 Identifies a *person* administering our cluster
 
 #### Services accounts
 Identifies a *pod* administering a cluster
 
-*ClusterRoleBinding* *RoleBinding* for authozation
+*ClusterRoleBinding* and *RoleBinding* for authozation
 #### ClusterRoleBinding
 Authorized an account to do a certain set of actions across the entire cluster
 
