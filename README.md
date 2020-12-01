@@ -187,10 +187,71 @@ gcloud container clusters upgrade  multi-k8s --master --cluster-version 1.9.7
 gcloud container clusters upgrade  multi-k8s --master --cluster-version latest
 ```
 [info](https://cloud.google.com/kubernetes-engine/docs/how-to/upgrading-a-cluster)
+
 [info](https://cloud.google.com/kubernetes-engine/versioning-and-upgrades#specifying_cluster_version)
+
 [avalable versions](https://cloud.google.com/kubernetes-engine/docs/release-notes)
 
 [Certificate](https://cert-manager.io/next-docs/tutorials/acme/dns-validation/)
+
 [Certificate](https://cert-manager.io/next-docs/tutorials/acme/http-validation/)
 
 [ClusterIssuer](https://cert-manager.io/docs/configuration/acme/)
+
+## New projects
+Create a new folder like k8s folder
+
+## Skaffold
+[install](https://skaffold.dev/docs/install/)
+
+En la carpeta principal ejecutar (en este caso en la carpeta root, no en k8s, ya que los archivos tienen el path k8s/archivo.yaml)
+```
+skaffold dev
+```
+### Config
+```
+  
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  local:
+    push: false
+# los artifacts teminan siendo como un array, se relacionan con la seccion deploy, ya que va deployando secuencialmente en esos archivos
+  artifacts:
+    # va trabajando sobre la imagen con el tag facundoalarcon/multi-client
+    - image: facundoalarcon/multi-client
+    # directorio
+      context: client
+    # dockerfile
+      docker:
+        dockerfile: Dockerfile.dev
+    # sincroniza/inyecta los archivos cambiados js/css/html en el container/pod (cada vez que se haga un cambio skaffold va a intentar hacer un apply del los archivos de configuracion yaml que estan en la parte de deploy)
+    # cabe aclarar si se hace un cambio a otro archivo que no sea js, css o html en este caso skaffold volvera el modo 1 y reconstruira la imagen en vez de solo inyectar los archivos cambiados
+      sync:
+        '**/*.js': .
+        '**/*.css': .
+        '**/*.html': .
+    - image: facundoalarcon/multi-server
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        '**/*.js': .
+    - image: facundoalarcon/multi-worker
+      context: worker
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        '**/*.js': .
+deploy:
+  kubectl:
+    # archivos que se van a intentar aplicar (apply -f) para aplicarlos a los pods
+    # cuando se cierre skaffold se los va a borrar los pods relacionados a estos archivos
+    # por eso se debe pensar si agregar o no archivos que tengan PVC relacionados, debido a que borrara todo eso, por ej en el caso de postgresql
+    manifests:
+      - k8s/client-deployment.yaml
+      - k8s/server-deployment.yaml
+      - k8s/worker-deployment.yaml
+      - k8s/server-cluster-ip-service.yaml
+      - k8s/client-cluster-ip-service.yaml
+```
