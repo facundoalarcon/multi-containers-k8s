@@ -1,4 +1,5 @@
 FROM node:alpine
+# For Skaffold ENV variable
 ENV CI=true
  
 WORKDIR "/app"

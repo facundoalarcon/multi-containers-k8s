@@ -205,6 +205,20 @@ Create a new folder like k8s folder
 [install](https://skaffold.dev/docs/install/)
 
 En la carpeta principal ejecutar (en este caso en la carpeta root, no en k8s, ya que los archivos tienen el path k8s/archivo.yaml)
+
+Start minikube
+```
+minikube start
+```
+check the minikube ip 
+```
+minikube ip
+```
+add the application hostame in host file */etc/hosts* 
+```
+192.168.49.2    etherhunters.com
+192.168.49.2    www.etherhunters.com
+``` 
 ```
 skaffold dev
 ```
