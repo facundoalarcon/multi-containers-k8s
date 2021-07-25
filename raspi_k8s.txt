@@ -48,6 +48,10 @@ una sola cosa no encontre en la docu. Cuestion que puede que el nodo master te d
 1_ https://itnext.io/building-your-home-raspberry-pi-kubernetes-cluster-14eeeb3c521e
 2_ https://www.apascualco.com/raspberry/instalando-kubernetes-en-raspberry-pi-4/
 
+EN VEZ DE FLANNEL SE PUEDE USAR CALICO PARA CNI
+https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
+https://docs.projectcalico.org/getting-started/clis/calicoctl/install
+
 cuestion que es este comando
 sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
