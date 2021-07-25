@@ -1,0 +1,91 @@
+GUIA
+
+
+INSTALACION LIMPIA
+ELIMINAR KUBEADM
+kubeadm reset
+sudo apt-get purge kubeadm kubectl kubelet kubernetes-cni kube*
+sudo apt-get autoremove
+sudo rm -rf ~/.kube
+
+ELIMINARDOCKER  CONTAINERS
+
+COMIENZO
+
+activar modo promiscuo en los nodos
+sudo ip link set ens33 promisc on
+
+Tener en cuenta que docker usa arquitectura ARM no AMD como por default te quieren hacer instalar.
+En este caso es recomendable instalar por script ya que te selecciona cual es para tu arquitectura
+https://docs.docker.com/engine/install/ubuntu/
+https://github.com/docker/docker-install
+
+K8s no soporta swapp, tiene que estar deshabilitado
+sudo swapoff -a
+
+sudo kubeadm init --pod-network-cidr=10.10.0.0/16
+
+KUBEAD NOTAS
+en gral la docu oficial esta bien https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/
+el cgroup drive lo hago con docker (ver en la documentacion)
+
+si quiero usar el nodo master como worker tambien voy a necesitar insolar el master. Esto quedaria como minikube. Si quiero para prod no me sirve
+kubectl taint nodes --all node-role.kubernetes.io/master-
+
+si quiero agregar un nodo voy a ter que instalar kubeadm, en el nodo y ejecutar este comando
+los tokens vencen a las 24 hs, se pueden volver a generar tanto el token como el hash (ver en la documentacion)
+kubeadm join --token n0y54v.rt1l4i85txfncw2w 192.168.1.101:6443 --discovery-token-ca-cert-hash sha256:6f2155fde752e9d24d60f49bb825c8998158d7aefef74cae7b1f9f10e7f7b8cf
+
+kubeadm join 192.168.1.101:6443 --token 5peh25.bi144dsshllusivj \
+	--discovery-token-ca-cert-hash sha256:4e2a6a16346541c34c9b526d2a9bdfe0cf428d50f00b832405761b5eee0a3659
+
+Tambien puedo usar
+kubeadm token create --print-join-command
+
+YO NO HICE ESO DE PONERLO EN MODO PROMISCUO A LA INTERFAZ
+
+una sola cosa no encontre en la docu. Cuestion que puede que el nodo master te diga NotReady y ahi tranqe. Para eso hay que agregar flannel. Esto se puede ver en 
+1_ https://itnext.io/building-your-home-raspberry-pi-kubernetes-cluster-14eeeb3c521e
+2_ https://www.apascualco.com/raspberry/instalando-kubernetes-en-raspberry-pi-4/
+
+EN VEZ DE FLANNEL SE PUEDE USAR CALICO PARA CNI
+https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
+https://docs.projectcalico.org/getting-started/clis/calicoctl/install
+
+
+cuestion que es este comando
+sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+con eso queda funcionando
+
+Podemos seguir los pasos de 1_ para tener un dashboard y demas
+
+Es interesante ver que podemos agregar mas nodos para control-plain y worker nodes
+https://kubernetes.io/docs/reference/setup-tools/kubeadm/kubeadm-join/
+
+kubeadm join --token 5peh25.bi144dsshllusivj 192.168.1.101:6443 --discovery-token-ca-cert-hash sha256:4e2a6a16346541c34c9b526d2a9bdfe0cf428d50f00b832405761b5eee0a3659
+5peh25.bi144dsshllusivj
+
+ver:
+https://www.apascualco.com/cloud/single-page-application-en-kubernetes
+
+https://www.apascualco.com/cloud/kubernetes/kubernetes-que-runtime-elegir-para-nuestro-cluster-en-raspberry-arm/
+
+Exppose ports:
+ kubectl patch svc guestbook-frontend -p '{"spec":{"externalIPs":["192.168.1.101"]}}'
+
+https://stackoverflow.com/questions/44519980/assign-external-ip-to-a-kubernetes-service
+
+Mas cosas de networking para exponer puertos y dar una IP
+https://metallb.universe.tf/configuration
+
+Esto anda del MetalL (si o si debe haber un nodo worker sino no anda)
+https://blog.inkubate.io/install-and-configure-metallb-as-a-load-balancer-for-kubernetes/
+
+Puede tirar un error y no inicializar los pods de metallb creando un secret generico
+
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
+
+GUIA NO OFICIAL PERO TIENE TODO
+https://unofficial-kubernetes.readthedocs.io/en/latest/admin/kubeadm/

@@ -1,0 +1,71 @@
+    1  sudo apt-get update
+    2  sudo su
+    3  ls
+    4  rm -rf bin/
+    5  cd calico/
+    6  cp -p $HOME/local/bin
+    7  cp -p calicoctl $HOME/local/bin
+    8  cp -p calicoctl usr/local/bin
+    9  cp -p calicoctl /usr/local/bin
+   10  sudo cp calicoctl /usr/local/bin
+   11  calicoctl
+   12  sudo calicoctl
+   13  cat calicoctl 
+   14  clear
+   15  sudo chmod +x /usr/local/bin/calicoctl
+   16  calicoctl
+   17  calicoctl --help
+   18  kubectl get nodes
+   19  ping 8.8.8.8
+   20  kubectl edit configmap -n kube-system kube-proxy
+   21  kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/namespace.yaml
+   22  kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/metallb.yaml
+   23  cd //
+   24  cd
+   25  mkdir metallb
+   26  cd metallb/
+   27  ls
+   28  kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/namespace.yaml
+   29  kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.10.2/manifests/metallb.yaml
+   30  cd ..
+   31  mkdir projects
+   32  kubectl get pods
+   33  kubectl get ns
+   34  kubectl get pods -n metallb-system
+   35  mkdir projects
+   36  mkdir test
+   37  cd test/
+   38  cd ..
+   39  mv test/ web
+   40  cd web/
+   41  vim nginx-deployment.yaml
+   42  vim nginx-services.yaml
+   43  kubectl apply -f nginx-deployment.yaml 
+   44  kubectl apply -f nginx-services.yaml 
+   45  kubectl get svc
+   46  cd ..
+   47  cd web/
+   48  kubectl delete -f ./
+   49  cd ..
+   50  cd metallb/
+   51  kubectl get pods -n metallb-system
+   52  vim metallb-configmap.yaml
+   53  kubectl apply -f metallb-configmap.yaml 
+   54  cd ..
+   55  kubectl get pods -n metallb-system
+   56  cd projects/
+   57  ls
+   58  cd ..
+   59  ls
+   60  mv web/ projects/
+   61  cd projects/
+   62  ls
+   63  cd web
+   64  ls
+   65  kubectl apply -f ./
+   66  kubectl get pods
+   67  kubectl get svc
+   68  kubectl get pods
+   69  $HECHO
+   70  $HOME
+   71  history > $HOME/k8s-master-history.txt
