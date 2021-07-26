@@ -52,6 +52,13 @@ EN VEZ DE FLANNEL SE PUEDE USAR CALICO PARA CNI
 https://docs.projectcalico.org/getting-started/kubernetes/self-managed-onprem/onpremises
 https://docs.projectcalico.org/getting-started/clis/calicoctl/install
 
+Cuando se instala MetalLB solo cambiar esto (esta en la documentacion) no tirar el script ese que dice
+apiVersion: kubeproxy.config.k8s.io/v1alpha1
+kind: KubeProxyConfiguration
+mode: "ipvs"
+ipvs:
+  strictARP: true
+
 cuestion que es este comando
 sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
