@@ -58,6 +58,9 @@ kind: KubeProxyConfiguration
 mode: "ipvs"
 ipvs:
   strictARP: true
+  
+Para ver si todo va bien con MetalLB
+kubectl get pods -n metallb-system
 
 cuestion que es este comando
 sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
